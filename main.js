@@ -47,13 +47,19 @@ Trello.prototype.addBoard = function (name, description, organizationId, callbac
     return makeRequest(rest.post, this.uri + '/1/boards', {query: query}, callback);
 };
 
-Trello.prototype.addCard = function (name, description, listId, callback) {
+Trello.prototype.addCard = function (name, description, listId, callback, params) {
     var query = this.createQuery();
     query.name = name;
     query.idList = listId;
 
     if (description !== null)
         query.desc = description;
+
+    if(typeof params === 'object') {
+        for(var key in params) {
+            query[key] = params[key];
+        }
+    }
 
     return makeRequest(rest.post, this.uri + '/1/cards', {query: query}, callback);
 };
